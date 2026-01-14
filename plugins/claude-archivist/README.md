@@ -14,7 +14,8 @@ Automatically archive Claude Code session transcripts to prevent data loss from 
 
 | Command | Description |
 |---------|-------------|
-| `/claude-archivist:archive` | Force immediate backup of all sessions |
+| `/claude-archivist:archive` | Archive current session |
+| `/claude-archivist:archive-all` | Archive all sessions (full scan) |
 | `/claude-archivist:archive-status` | Show archive statistics |
 | `/claude-archivist:restore-from-archive` | Restore deleted sessions |
 | `/claude-archivist:configure-archive` | Configure plugin settings |
@@ -39,9 +40,9 @@ enabled: true
 
 ## How It Works
 
-1. **SessionEnd hook**: Archives all sessions when you exit Claude Code
-2. **PreCompact hook**: Archives before context compaction trims transcripts
-3. **Stop hook**: Checks elapsed time after each response, backs up if interval exceeded
+1. **SessionEnd hook**: Archives current session when you exit Claude Code
+2. **PreCompact hook**: Archives current session before context compaction
+3. **Stop hook**: Periodic backup - archives current session if interval exceeded
 
 Archives mirror the source structure:
 ```

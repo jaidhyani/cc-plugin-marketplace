@@ -6,7 +6,7 @@ Claude Code plugins by jaidhyani.
 
 Add this marketplace:
 ```bash
-/plugin marketplace add jaidhyani/claude-marketplace
+/plugin marketplace add jaidhyani/cc-plugin-marketplace
 ```
 
 ## Available Plugins
@@ -28,7 +28,8 @@ Automatically archive Claude Code session transcripts to prevent data loss.
 - Restore deleted sessions without overwriting existing ones
 
 **Commands:**
-- `/claude-archivist:archive` - Force immediate backup
+- `/claude-archivist:archive` - Archive current session
+- `/claude-archivist:archive-all` - Archive all sessions (full scan)
 - `/claude-archivist:archive-status` - Show backup statistics
 - `/claude-archivist:restore-from-archive` - Restore deleted sessions
 - `/claude-archivist:configure-archive` - Configure settings
