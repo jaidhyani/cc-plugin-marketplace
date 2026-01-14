@@ -1,12 +1,11 @@
 {
   "name": "claude-archivist",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Automatically archive Claude Code session transcripts to prevent data loss",
   "author": {
     "name": "Jai"
   },
   "license": "MIT",
   "keywords": ["sessions", "archive", "backup", "transcripts"],
-  "commands": ["./commands/"],
-  "hooks": "./hooks/hooks.json"
+  "commands": ["./commands/"]
 }

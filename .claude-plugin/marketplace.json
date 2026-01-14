@@ -11,7 +11,7 @@
       "name": "claude-archivist",
       "source": "./plugins/claude-archivist",
       "description": "Automatically archive Claude Code session transcripts to prevent data loss",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Jai"
       }
