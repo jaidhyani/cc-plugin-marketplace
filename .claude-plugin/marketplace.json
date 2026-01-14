@@ -1,0 +1,20 @@
+{
+  "name": "claude-marketplace",
+  "owner": {
+    "name": "jaidhyani"
+  },
+  "metadata": {
+    "description": "Claude Code plugins by jaidhyani"
+  },
+  "plugins": [
+    {
+      "name": "claude-archivist",
+      "source": "./plugins/claude-archivist",
+      "description": "Automatically archive Claude Code session transcripts to prevent data loss",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jai"
+      }
+    }
+  ]
+}
