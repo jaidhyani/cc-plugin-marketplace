@@ -2,15 +2,20 @@
 set -e
 
 PERIODIC_MODE=false
-if [ "$1" = "--periodic" ]; then
-    PERIODIC_MODE=true
-fi
+FULL_SCAN=false
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --periodic) PERIODIC_MODE=true; shift ;;
+        --full) FULL_SCAN=true; shift ;;
+        *) shift ;;
+    esac
+done
 
 CONFIG_FILE="$HOME/.claude/claude-archivist.local.md"
 SOURCE_DIR="$HOME/.claude/projects"
 DEFAULT_ARCHIVE_DIR="$HOME/.claude-archive"
 DEFAULT_INTERVAL_MINUTES=30
-LAST_BACKUP_FILE="$DEFAULT_ARCHIVE_DIR/.last-backup-timestamp"
 
 read_config() {
     ARCHIVE_DIR="$DEFAULT_ARCHIVE_DIR"
@@ -59,17 +64,19 @@ should_run_periodic() {
     local interval_seconds=$((INTERVAL_MINUTES * 60))
     local elapsed=$((now - last_backup))
 
-    if [ "$elapsed" -ge "$interval_seconds" ]; then
-        return 0
-    fi
-    return 1
+    [ "$elapsed" -ge "$interval_seconds" ]
 }
 
 archive_file() {
     local source_file="$1"
+
+    if [ ! -f "$source_file" ]; then
+        return 0
+    fi
+
     local relative_path="${source_file#$SOURCE_DIR/}"
     local archive_file="$ARCHIVE_DIR/$relative_path.gz"
-    local archive_parent=$(dirname "$archive_file")
+    local archive_parent=$(dirname -- "$archive_file")
 
     if [ -f "$archive_file" ]; then
         local source_mtime=$(stat -c %Y "$source_file" 2>/dev/null || stat -f %m "$source_file")
@@ -86,16 +93,11 @@ archive_file() {
 
 archive_all_sessions() {
     if [ ! -d "$SOURCE_DIR" ]; then
-        echo "Source directory $SOURCE_DIR not found" >&2
-        exit 1
+        return 0
     fi
 
-    local archived_count=0
-
     while IFS= read -r -d '' file; do
-        if archive_file "$file"; then
-            archived_count=$((archived_count + 1))
-        fi
+        archive_file "$file"
     done < <(find "$SOURCE_DIR" -name "*.jsonl" -type f -print0 2>/dev/null)
 
     date +%s > "$LAST_BACKUP_FILE"
@@ -108,14 +110,35 @@ main() {
         exit 0
     fi
 
+    mkdir -p "$ARCHIVE_DIR"
+
+    # Try to read hook input from stdin (non-blocking)
+    HOOK_INPUT=""
+    if [ ! -t 0 ]; then
+        HOOK_INPUT=$(cat)
+    fi
+
+    # Extract transcript_path if we got hook input
+    TRANSCRIPT_PATH=""
+    if [ -n "$HOOK_INPUT" ]; then
+        TRANSCRIPT_PATH=$(echo "$HOOK_INPUT" | grep -o '"transcript_path":"[^"]*"' | cut -d'"' -f4 || true)
+    fi
+
+    # For periodic mode, check interval first
     if [ "$PERIODIC_MODE" = true ]; then
         if ! should_run_periodic; then
             exit 0
         fi
     fi
 
-    mkdir -p "$ARCHIVE_DIR"
-    archive_all_sessions
+    # If we have a specific transcript, just archive that one file
+    if [ -n "$TRANSCRIPT_PATH" ] && [ "$FULL_SCAN" != true ]; then
+        archive_file "$TRANSCRIPT_PATH"
+        date +%s > "$LAST_BACKUP_FILE"
+    else
+        # Full scan for manual /archive command
+        archive_all_sessions
+    fi
 }
 
 main
