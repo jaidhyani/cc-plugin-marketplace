@@ -17,7 +17,7 @@ Automatically archive Claude Code session transcripts to prevent data loss.
 
 **Install:**
 ```bash
-/plugin install claude-archivist@claude-marketplace
+/plugin install claude-archivist@cc-plugin-marketplace
 ```
 
 **Features:**
