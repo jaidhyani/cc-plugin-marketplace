@@ -60,4 +60,9 @@ Never use a single global file for state that should be per-session.
 
 ## Versioning
 
-Bump the version in `plugin.json` for each release so users can see updates are available.
+**Always bump the version in `plugin.json` when a plugin changes.** Users won't get updates without a version bump.
+
+Semantic versioning:
+- **0.0.1** - Bugfixes (no new features, no breaking changes)
+- **0.1.0** - New features (backwards compatible)
+- **1.0.0** - Breaking changes
