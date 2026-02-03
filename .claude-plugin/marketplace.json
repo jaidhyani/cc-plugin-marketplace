@@ -24,6 +24,15 @@
       "author": {
         "name": "Jai"
       }
+    },
+    {
+      "name": "imagine",
+      "source": "./plugins/imagine",
+      "description": "Generate images using Gemini 3 Pro (Nano Banana Pro)",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jai"
+      }
     }
   ]
 }
