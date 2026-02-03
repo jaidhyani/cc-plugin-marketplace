@@ -2,6 +2,15 @@
 
 This is Jai's personal plugin marketplace for Claude Code plugins.
 
+## Adding a New Plugin
+
+Two steps required:
+
+1. **Create plugin files** in `plugins/<plugin-name>/`
+2. **Register in marketplace** by adding an entry to `.claude-plugin/marketplace.json`
+
+Without step 2, the plugin won't appear when users browse the marketplace.
+
 ## Plugin Structure
 
 Each plugin lives in `plugins/<plugin-name>/` with:
