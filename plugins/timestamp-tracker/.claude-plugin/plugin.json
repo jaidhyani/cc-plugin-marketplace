@@ -1,6 +1,6 @@
 {
   "name": "timestamp-tracker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Track timestamps of user prompts and Claude responses for temporal context",
   "author": {
     "name": "Jai"
