@@ -23,18 +23,12 @@ if [ -d "$ARCHIVE_DIR" ] && [ "$(find "$ARCHIVE_DIR" -name "*.jsonl.gz" -type f 
     exit 0
 fi
 
-# First run - output prompt for Claude
+# First run - output JSON with context for Claude
 cat << 'EOF'
-The claude-archivist plugin is installed but hasn't done an initial archive yet.
-
-Ask the user if they'd like to run a full archive of all existing sessions now. Present these options:
-
-1. **Archive now** - Run a full backup of all sessions (recommended)
-2. **Remind me later** - Skip for now, ask again next session
-3. **Don't ask again** - Skip and never prompt about this
-
-Based on their choice:
-- If "Archive now": Run `${CLAUDE_PLUGIN_ROOT}/scripts/archive.sh --full` then run `touch ~/.claude-archive/.setup-complete`
-- If "Remind me later": Run `mkdir -p ~/.claude-archive && touch ~/.claude-archive/.setup-deferred`
-- If "Don't ask again": Run `mkdir -p ~/.claude-archive && touch ~/.claude-archive/.setup-complete`
+{
+  "hookSpecificOutput": {
+    "hookEventName": "SessionStart",
+    "additionalContext": "The claude-archivist plugin is installed but hasn't done an initial archive yet.\n\nAsk the user if they'd like to run a full archive of all existing sessions now. Present these options:\n\n1. **Archive now** - Run a full backup of all sessions (recommended)\n2. **Remind me later** - Skip for now, ask again next session\n3. **Don't ask again** - Skip and never prompt about this\n\nBased on their choice:\n- If \"Archive now\": Run `/archive-all` then run `touch ~/.claude-archive/.setup-complete`\n- If \"Remind me later\": Run `mkdir -p ~/.claude-archive && touch ~/.claude-archive/.setup-deferred`\n- If \"Don't ask again\": Run `mkdir -p ~/.claude-archive && touch ~/.claude-archive/.setup-complete`"
+  }
+}
 EOF
