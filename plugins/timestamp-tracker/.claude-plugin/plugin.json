@@ -1,0 +1,10 @@
+{
+  "name": "timestamp-tracker",
+  "version": "1.0.0",
+  "description": "Track timestamps of user prompts and Claude responses for temporal context",
+  "author": {
+    "name": "Jai"
+  },
+  "license": "MIT",
+  "keywords": ["timestamps", "context", "tracking"]
+}

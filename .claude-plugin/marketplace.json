@@ -15,6 +15,15 @@
       "author": {
         "name": "Jai"
       }
+    },
+    {
+      "name": "timestamp-tracker",
+      "source": "./plugins/timestamp-tracker",
+      "description": "Track timestamps of user prompts and Claude responses for temporal context",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jai"
+      }
     }
   ]
 }
