@@ -1,9 +1,15 @@
 #!/bin/bash
 # Timestamp tracking for Claude
 # Stop hook writes to file, UserPromptSubmit reads and outputs to Claude
+# Uses session_id from hook JSON input for multi-session isolation
 
-TIMESTAMP_FILE="/tmp/claude-last-response.txt"
 EVENT_TYPE="${1:-event}"
+
+# Read JSON input from stdin and extract session_id
+INPUT=$(cat)
+SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "default"')
+
+TIMESTAMP_FILE="/tmp/claude-timestamp-${SESSION_ID}.txt"
 
 if [ "$EVENT_TYPE" = "stop" ]; then
     # Record when Claude finished responding
