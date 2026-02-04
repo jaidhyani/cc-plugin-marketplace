@@ -44,3 +44,35 @@ backup_interval_minutes: 30
 enabled: true
 ---
 ```
+
+### tracked-sessions
+
+Track Claude Code session lifecycle for monitoring and resume workflows across git worktrees.
+
+**Install:**
+```bash
+/plugin install tracked-sessions@cc-plugin-marketplace
+```
+
+**Features:**
+- Tracks session start/end with metadata (session ID, PID, working directory, timestamps)
+- Session data stored at `~/.claude/tracked-sessions/<session-id>/meta.json`
+- Integrates with `wt` worktree slots (a-f)
+
+**CLI Tool (separate install):**
+
+The `cs` command-line tool for listing and managing sessions is available from [jaidhyani/claude-config](https://github.com/jaidhyani/claude-config):
+
+```bash
+# Copy to your ~/.claude/bin/
+curl -o ~/.claude/bin/cs https://raw.githubusercontent.com/jaidhyani/claude-config/main/bin/cs
+chmod +x ~/.claude/bin/cs
+```
+
+**CLI Commands:**
+- `cs list` - Show all tracked sessions with git status
+- `cs start <slot> "<prompt>"` - Launch headless session in worktree
+- `cs attach <slot>` - Resume session interactively
+- `cs resume <slot> "<prompt>"` - Continue session headless
+- `cs stop <slot>` - Kill running session
+- `cs clean` - Remove stale session directories
