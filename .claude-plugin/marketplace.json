@@ -51,6 +51,15 @@
       "author": {
         "name": "Jai"
       }
+    },
+    {
+      "name": "pr-watch",
+      "source": "./plugins/pr-watch",
+      "description": "Efficient PR monitoring that blocks until changes are detected, saving LLM tokens",
+      "version": "0.1.0",
+      "author": {
+        "name": "Jai"
+      }
     }
   ]
 }
