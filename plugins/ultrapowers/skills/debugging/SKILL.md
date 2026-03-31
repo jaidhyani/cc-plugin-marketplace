@@ -19,9 +19,11 @@ No fixes without root cause investigation first. If the fix doesn't follow from 
 
 3. **Check recent changes.** Git diff, new dependencies, config changes, environmental differences.
 
-4. **Trace data flow.** Where does the bad value originate? Trace backward through the call stack until the source is found. Fix at source, not at symptom.
+4. **Check dependencies, config, and environment assumptions.** Is the right version installed? Are env vars set? Is the config what you expect? Don't assume — verify.
 
-5. **In multi-component systems**, add diagnostic logging at each component boundary before proposing fixes. Run once to see WHERE it breaks, then investigate that specific component.
+5. **Trace data flow.** Where does the bad value originate? Trace backward through the call stack until the source is found. Fix at source, not at symptom.
+
+6. **In multi-component systems**, add diagnostic logging at each component boundary before proposing fixes. Run once to see WHERE it breaks, then investigate that specific component.
 
 ## Phase 2: Analyze
 
@@ -33,17 +35,22 @@ No fixes without root cause investigation first. If the fix doesn't follow from 
 
 - Form a single, specific hypothesis: "X is the root cause because Y."
 - Make the smallest possible change to test it. One variable at a time.
-- Did it work? Done. Didn't work? New hypothesis — don't stack fixes.
+- If you can't state the root cause in one sentence, you are not ready to fix.
+- If hypothesis fails, return to Phase 1 with new information — don't stack another guess.
 
 ## Phase 4: Fix
 
-- Write a failing test that reproduces the bug before fixing it.
-- Implement a single fix addressing the root cause.
-- Verify: test passes, no other tests broken.
+- Write a failing test that reproduces the bug (`ultrapowers:tdd`).
+- Implement a single fix addressing the root cause. ONE change at a time.
+- Verify: test passes, no other tests broken (`ultrapowers:verify`).
 
 ## The 3-Fix Rule
 
 If 3+ fix attempts have failed, stop. This isn't a bug — it's an architectural problem. Each fix revealing a new issue in a different place is the pattern. Question fundamentals. Discuss with the user before attempting more fixes.
+
+## Human Feedback Signals
+
+If the user says things like "stop guessing," "is that not happening?", "are we stuck?" — these mean you've skipped investigation. Return to Phase 1 immediately.
 
 ## When You're Doing It Wrong
 
@@ -53,3 +60,5 @@ These thoughts mean stop and return to Phase 1:
 - "Just try changing X and see"
 - "I don't fully understand but this might work"
 - "One more fix attempt" (when already tried 2+)
+- "I don't fully understand but let me add some logging" (logging without a hypothesis)
+- Proposing solutions before tracing data flow

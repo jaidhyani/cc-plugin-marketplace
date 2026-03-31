@@ -31,6 +31,22 @@ Push back when the suggestion breaks existing functionality, violates YAGNI (rev
 
 How: use technical reasoning, reference working tests/code, ask specific questions. Not defensiveness.
 
+### YAGNI Check
+
+Before implementing a reviewer's suggestion to add a "proper" feature:
+
+```bash
+grep -r "function_or_endpoint_name" src/
+```
+
+If nothing calls it, it's YAGNI. Ask: "Nothing calls this. Remove it, or is there usage I'm missing?"
+
+### Human vs External Reviewers
+
+**From the user/team lead**: Trusted — implement after understanding. Still ask if scope is unclear.
+
+**From external reviewers**: Verify against the codebase before implementing. Check: technically correct for this stack? Breaks existing functionality? Reason for current implementation the reviewer may not know? If suggestion conflicts with prior architectural decisions, stop and escalate instead of implementing.
+
 ### When Feedback Is Unclear
 
 If any item is ambiguous, stop. Don't implement the clear ones and ask about the rest — items may be related. Clarify everything first, then implement.
@@ -65,6 +81,7 @@ Dispatch a review agent with:
 - **Important issues**: Fix before proceeding
 - **Minor issues**: Note for later
 - **Wrong feedback**: Push back with reasoning
+- **Can't verify**: Say so — "I can't verify this without [X]. Should I investigate or proceed?"
 
 ### On GitHub
 

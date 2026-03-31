@@ -10,6 +10,7 @@ Write the test first. Watch it fail. Write minimal code to pass. Refactor.
 ## The Rule
 
 No production code without a failing test first. If the test didn't fail, it doesn't prove anything.
+If you didn't watch the test fail, you don't know if it tests the right thing.
 
 **Exceptions:** Throwaway prototypes, generated code, config files. Ask if unsure.
 
@@ -49,7 +50,14 @@ Tests written after code pass immediately. Passing immediately proves nothing �
 
 ## Wrote Code First?
 
-Delete it. Write the test. Implement fresh. Don't keep it as "reference" — that's testing after with extra steps.
+Delete it. Start over with a test.
+
+- Don't keep it as "reference"
+- Don't "adapt" it while writing tests  
+- Don't look at it
+- Delete means delete
+
+Implement fresh from tests. Manual testing does not satisfy TDD.
 
 ## Bug Fix Pattern
 
@@ -68,3 +76,19 @@ Delete it. Write the test. Implement fresh. Don't keep it as "reference" — tha
 | Test too complicated | Design too complicated. Simplify the interface. |
 | Must mock everything | Code too coupled. Inject dependencies. |
 | Test setup is huge | Extract helpers. Still complex? Simplify design. |
+
+## Testing Anti-Patterns
+
+- Don't test mock behavior instead of real behavior. If the test only verifies that a mock was called, it proves nothing about the actual code.
+- Don't add test-only methods to production classes. If you need special access for testing, the design needs work.
+- Don't mock dependencies you don't understand. If you can't explain what the real dependency does, mocking it means guessing at behavior.
+
+## Stop Signs
+
+If you catch yourself doing any of these, stop and restart with TDD:
+
+- Writing production code before the test
+- Test passes on first run (testing existing behavior, not new)
+- Rationalizing "just this once" or "this is different"
+- "I already manually tested it"
+- Keeping pre-written code as "reference"

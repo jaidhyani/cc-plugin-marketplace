@@ -33,15 +33,16 @@ Failures might be related (fix one → fixes others), need full system understan
 
 ## Sequential Task Orchestration
 
-For executing implementation plans where tasks have dependencies or touch overlapping code.
+For executing implementation plans where tasks have dependencies or touch overlapping code. Implementation agents do not count as verification — every task needs independent review.
 
 ### The Pattern
 
 1. **Extract all tasks** from the plan upfront with full text
 2. **Dispatch one agent per task** sequentially (not parallel — they'll conflict)
-3. **Review the diff** after each agent completes, before dispatching the next
+3. **Two-stage review** after each agent: first spec compliance (does it match the task?), then code quality (is it well-built?). Re-review until clean.
 4. **Fix issues** before moving on — don't accumulate debt across tasks
 5. **Run full test suite** after all tasks complete
+6. **Final review** of the entire implementation against the original spec before finishing
 
 ### Agent Instructions
 
@@ -54,9 +55,17 @@ Each implementation agent gets:
 
 - **Done**: Review the diff, proceed to next task
 - **Needs context**: Provide what's missing, re-dispatch
-- **Blocked**: Assess — context problem? Task too large? Plan wrong? Escalate if needed.
+- **Blocked**: Assess the blocker. Context problem → provide context, re-dispatch. Task too large → break it up. 3+ failures or plan seems wrong → escalate to human before proceeding.
 - **Done with concerns**: Read concerns before proceeding. Address correctness issues; note observational ones.
 
 ### Model Selection
 
 Use the cheapest model that can handle the task. Mechanical work (isolated functions, clear specs, 1-2 files) → fast model. Integration and judgment → standard model. Architecture and review → most capable model.
+
+## Rules
+
+- Never start implementation on main/master without explicit user consent
+- Never skip review stages — implementation agents self-reporting "done" is not verification
+- Never dispatch multiple implementation agents in parallel on the same codebase
+- Implementation agents should follow TDD (`ultrapowers:tdd`)
+- Open review issues block the next task — don't accumulate debt

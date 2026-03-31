@@ -11,6 +11,8 @@ Evidence before claims, always.
 
 No completion claims without fresh verification evidence in the current response. "Should work now" is not evidence. Run the command, read the output, then state the result.
 
+This applies before ANY transition: completing a task, moving to the next task, delegating to an agent, committing, creating a PR, or telling the user "done." Skip any step and the claim is unverified.
+
 ## The Gate
 
 Before any claim of success, completion, or readiness:
@@ -27,6 +29,7 @@ Before any claim of success, completion, or readiness:
 | "Tests pass" | Test output showing 0 failures | Previous run, "should pass" |
 | "Build succeeds" | Build command exit 0 | Linter passing |
 | "Bug fixed" | Failing test now passes | "Code changed, should work" |
+| "Regression test works" | Pass → revert fix → fail → restore → pass | Test passes once |
 | "Requirements met" | Line-by-line check against spec | "Tests pass" |
 | "Agent completed work" | Review the actual diff | Agent's self-report |
 
@@ -38,5 +41,11 @@ About to write any of these? Stop and run the verification first:
 - "Done!" / "All set!" / "Ready to merge"
 - Any expression of satisfaction before running the proof
 - Committing or pushing without test results in this response
+- Using "should", "probably", or "seems to" about untested claims
+- Moving to the next task without verifying the current one
+- Trusting an agent's self-report without checking the diff
+- If verification fails, state the actual failure with command output — don't go quiet
 
-Never trust agent self-reports. Check the diff.
+## Why This Matters
+
+Unverified claims break trust, ship broken code, and waste time on rework. "I'm confident" is not evidence. Run the command.

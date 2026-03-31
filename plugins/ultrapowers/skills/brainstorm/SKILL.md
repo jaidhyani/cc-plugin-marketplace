@@ -19,7 +19,7 @@ Before anything else, assess scope. Not every task needs the same treatment.
 
 **Medium (3-6 exchanges):** Genuine ambiguity exists. Multiple reasonable approaches, unclear requirements, or unfamiliar domain. Explore approaches, propose a recommendation, get alignment.
 
-**Deep (7+ exchanges):** Large scope, multiple subsystems, or novel territory. Full collaborative design: explore context, ask questions one at a time, propose approaches with trade-offs, present design in sections, get approval before proceeding.
+**Deep (7+ exchanges):** Large scope, multiple subsystems, or novel territory. Full collaborative design: explore context, ask questions one at a time, propose approaches with trade-offs, present design in sections, get approval before proceeding. If the request spans multiple independent subsystems, decompose first — each subsystem gets its own design cycle. Don't brainstorm a 4-component platform as one thing.
 
 The sizing decision is a judgment call, not a checklist. Err toward doing less process, not more. A 30-second clarification that prevents a wrong turn is valuable. A 10-minute design review for a one-line change is not.
 
@@ -56,9 +56,11 @@ For larger tasks, present the design in sections scaled to their complexity. A f
 
 Cover what matters: architecture, data flow, error handling, testing approach. Skip sections that are obvious from context.
 
+After presenting, run a quick self-review: any gaps, contradictions, or requirements that could be read two ways? Fix before proceeding.
+
 ### 5. Transition to Implementation
 
-When alignment is reached, move to implementation. For deep tasks, consider writing the design to a file if it would help the implementation phase (especially across context windows). For quick and medium tasks, just start building.
+When alignment is reached, move to implementation. For deep tasks, save the design to a file — it will outlive the current context window and serve as the spec for the implementation plan. For quick and medium tasks, just start building.
 
 Do not force a specific file path, spec format, or downstream skill invocation. The transition to implementation is a natural continuation, not a handoff to another process.
 

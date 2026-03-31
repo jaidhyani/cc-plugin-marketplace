@@ -11,6 +11,10 @@ Write plans that a fresh agent with zero codebase context can execute. Then exec
 
 After a design or spec is agreed on, before writing code. Not every task needs a plan — use judgment. A single-file change doesn't need one. A multi-file feature with dependencies does.
 
+## Scope Check
+
+If the spec covers multiple independent subsystems, split into separate plans — one per subsystem. Each plan should produce working, testable software on its own. Don't write a single monolithic plan for a platform with 4 unrelated components.
+
 ## Writing the Plan
 
 ### Structure
@@ -36,13 +40,31 @@ Each task is a self-contained unit of work. Each step is one action (2-5 minutes
 ```markdown
 ### Task N: [Component Name]
 
-**Files:** Create: `path/to/file.py` | Modify: `path/to/existing.py` | Test: `tests/path/test.py`
+**Files:** Create: `path/to/file.py` | Modify: `path/to/existing.py:45-60` | Test: `tests/path/test.py`
 
-- [ ] Write failing test
-- [ ] Run test, verify it fails for expected reason
-- [ ] Implement minimal code to pass
-- [ ] Run test, verify it passes
-- [ ] Commit
+- [ ] **Write failing test**
+  ```python
+  def test_specific_behavior():
+      result = function(input)
+      assert result == expected
+  ```
+
+- [ ] **Run test, verify it fails**
+  Run: `pytest tests/path/test.py::test_specific_behavior -v`
+  Expected: FAIL — "function not defined"
+
+- [ ] **Implement minimal code**
+  ```python
+  def function(input):
+      return expected
+  ```
+
+- [ ] **Run test, verify it passes**
+  Run: `pytest tests/path/test.py::test_specific_behavior -v`
+  Expected: PASS
+
+- [ ] **Commit**
+  `git add tests/path/test.py src/path/file.py && git commit -m "feat: add specific feature"`
 ```
 
 Include actual code in each step — not descriptions of code. "Add appropriate error handling" is a plan failure. Show the error handling.
@@ -54,11 +76,21 @@ Every step must contain what the implementer needs. Never write:
 - "Similar to Task N" (repeat it — tasks may be read out of order)
 - Steps without code blocks for code changes
 
+### Principles
+
+Every task follows TDD (test first), YAGNI (nothing speculative), and DRY (don't repeat patterns across tasks — extract shared code). Commit after each task.
+
 ### Self-Review
 
 After writing, check: Does every spec requirement map to a task? Do types and function names stay consistent across tasks? Any placeholders or vague steps?
 
 ## Executing a Plan
+
+### Before Starting
+
+Review the plan critically. Are there gaps? Unclear steps? Dependencies that won't work? If the plan is defective, fix it before executing — don't discover problems mid-implementation.
+
+Never start implementation on main/master without explicit user consent.
 
 ### Solo Execution
 
@@ -71,10 +103,11 @@ Dispatch one fresh agent per task. Each agent gets:
 - Relevant context about where the task fits
 - Clear scope boundaries
 
-After each agent completes:
-1. Review the diff against the task spec
-2. Fix any gaps before moving to the next task
-3. Run the full test suite periodically
+After each agent completes, conduct a two-stage review:
+1. **Spec compliance**: Does the diff match the task spec? Nothing missing, nothing extra.
+2. **Code quality**: Is the implementation well-built? Clean, tested, no shortcuts.
+
+Fix issues and re-review before moving to the next task. Open issues block the next task.
 
 Don't dispatch multiple implementation agents in parallel on the same codebase — they'll conflict. Dispatch sequentially, review between each.
 
