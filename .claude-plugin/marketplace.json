@@ -35,9 +35,9 @@
       }
     },
     {
-      "name": "brainstorm",
-      "source": "./plugins/brainstorm",
-      "description": "Lightweight design-before-code discipline. Scales from one clarifying question to full collaborative design sessions.",
+      "name": "ultrapowers",
+      "source": "./plugins/ultrapowers",
+      "description": "Development discipline without ceremony. Brainstorming, debugging, TDD, verification, planning, code review, and agent coordination.",
       "version": "0.1.0",
       "author": {
         "name": "Jai"

@@ -1,0 +1,10 @@
+{
+  "name": "ultrapowers",
+  "description": "Development discipline without ceremony. Brainstorming, debugging, TDD, verification, planning, code review, and agent coordination — each scaled to match the problem.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Jai"
+  },
+  "license": "MIT",
+  "keywords": ["workflow", "tdd", "debugging", "planning", "code-review", "agents"]
+}
