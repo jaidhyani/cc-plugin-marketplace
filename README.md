@@ -41,7 +41,7 @@ Opinionated dev workflow skills. Fork of the official [superpowers](https://gith
 
 ### devil
 
-Tears apart plans, designs, and code. Reads the actual codebase and builds counterexamples. One fatal flaw > twenty style nits.
+Tears apart plans, designs, and code. Reads the actual codebase and builds counterexamples.
 
 ```bash
 /plugin install devil@jai-cc-plugins
