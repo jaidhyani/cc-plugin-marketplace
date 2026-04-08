@@ -1,5 +1,5 @@
 ---
-name: agents
+name: dispatch
 description: "This skill should be used when facing 2+ independent tasks that can be worked on without shared state, or when coordinating subagent-driven implementation of a plan. Covers parallel dispatch and sequential task orchestration."
 ---
 
