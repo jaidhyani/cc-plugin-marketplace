@@ -71,6 +71,10 @@ STATE_FILE="/tmp/myplugin-${SESSION_ID}.txt"
 
 Never use a single global file for state that should be per-session.
 
+## Before Creating a New Plugin
+
+Check what already exists first. Run `ls plugins/` and scan `marketplace.json` before building anything new — the feature may already be implemented. This avoids duplicate work and wasted exploration.
+
 ## README
 
 **Always update README.md when adding, removing, or changing plugins.** The README is the public-facing plugin catalog — it must stay in sync with `marketplace.json`.
