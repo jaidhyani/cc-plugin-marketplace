@@ -44,6 +44,33 @@
       }
     },
     {
+      "name": "cleanup",
+      "source": "./plugins/cleanup",
+      "description": "Scope-sensitive code quality sweep: scan, fix safe issues, verify, report.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jai"
+      }
+    },
+    {
+      "name": "codebase-map",
+      "source": "./plugins/codebase-map",
+      "description": "Create or update ARCHITECTURE.md — module relationships, entry points, key abstractions.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jai"
+      }
+    },
+    {
+      "name": "spec",
+      "source": "./plugins/spec",
+      "description": "Interview-driven spec writing workflow.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jai"
+      }
+    },
+    {
       "name": "devil",
       "source": "./plugins/devil",
       "description": "Find flaws in plans, designs, and code",
