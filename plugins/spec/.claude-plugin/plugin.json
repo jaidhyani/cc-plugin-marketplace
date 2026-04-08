@@ -1,0 +1,10 @@
+{
+  "name": "spec",
+  "description": "Interview-driven spec writing workflow — deep requirements gathering before implementation.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Jai"
+  },
+  "license": "MIT",
+  "keywords": ["spec", "planning", "requirements"]
+}

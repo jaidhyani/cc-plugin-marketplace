@@ -1,0 +1,10 @@
+{
+  "name": "codebase-map",
+  "description": "Create or update ARCHITECTURE.md — module relationships, entry points, key abstractions.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Jai"
+  },
+  "license": "MIT",
+  "keywords": ["architecture", "documentation", "codebase"]
+}
