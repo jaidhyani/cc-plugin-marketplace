@@ -1,0 +1,10 @@
+{
+  "name": "cron-safe",
+  "description": "Prevent cron PATH bugs. Install a shared cron-env.sh that any cron script sources, plus a static test that verifies required tools resolve in cron's environment.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Jai"
+  },
+  "license": "MIT",
+  "keywords": ["cron", "crontab", "path", "scheduling", "bash"]
+}

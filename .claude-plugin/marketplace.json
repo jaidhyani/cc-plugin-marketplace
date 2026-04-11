@@ -96,6 +96,15 @@
       "author": {
         "name": "Jai"
       }
+    },
+    {
+      "name": "cron-safe",
+      "source": "./plugins/cron-safe",
+      "description": "Prevent cron PATH bugs. Shared cron-env.sh pattern + static tool-resolution test.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jai"
+      }
     }
   ]
 }
