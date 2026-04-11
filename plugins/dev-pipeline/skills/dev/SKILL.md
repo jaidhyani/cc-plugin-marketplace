@@ -65,6 +65,8 @@ If `.env` doesn't exist:
 
 ## Stage 2: Plan (HUMAN GATE)
 
+The plan goes through two gates: structural validation by the `PreToolUse` hook on `ExitPlanMode` (mechanical), then user content review (judgment). The hook will deny any plan missing the required sections and tell you which sections to add.
+
 ### 2.1 Research
 
 - Read ARCHITECTURE.md if it exists
@@ -72,9 +74,26 @@ If `.env` doesn't exist:
 - Read existing tests in the area
 - Check `dev/context/` for learnings, decisions, gotchas
 
-### 2.2 Write Plan
+### 2.2 Draft Plan
 
-Write `dev/OBJECTIVE.md`:
+Draft a plan containing **all four required sections** (see `~/.claude/CLAUDE.md` → "Plan Mode" for the full spec):
+
+1. **A fenced code block with the literal hot-path sequence** — actual events with indices, DDL, request/response, or call sequence. No prose paraphrases. If you can't show the concrete shape, you don't understand the change yet.
+2. **A specific named test that would fail if the shape is wrong** — `def test_block_indices_are_monotonic` or `tests/.../test_x.py::test_y`. Not "we'll add tests" — the name commits the plan to a concrete failure mode.
+3. **`## External Contracts` (or `## Invariants`)** — each external API/protocol this change touches and the invariant it must preserve. Write `- None` if genuinely none.
+4. **`## Assumptions`** — one falsifiable bullet per load-bearing assumption. Write `- None` if genuinely none.
+
+Plus the tracking content you'll persist downstream: goal, approach, test strategy, acceptance criteria, branch/PR/Trello.
+
+### 2.3 Submit via ExitPlanMode
+
+Call `ExitPlanMode` with the plan as the `plan` argument. The `PreToolUse` hook (`~/.claude/hooks/check_plan_quality.sh`) validates the four required sections before the user ever sees the plan. If any section is missing, the hook denies with a reason naming what to add — revise and resubmit.
+
+Once the hook passes, the user reviews the plan content via the native plan-mode approval flow. **STOP and wait for approval.** Adjust the plan if they have feedback.
+
+### 2.4 Persist Plan to dev/OBJECTIVE.md
+
+After user approval, write the plan to `dev/OBJECTIVE.md` as the on-disk artifact for downstream stages. Use this template (which includes the required sections so the persisted file matches what the user approved):
 
 ```markdown
 # Objective
@@ -91,14 +110,27 @@ Write `dev/OBJECTIVE.md`:
 - <Step 2: ...>
 - <Step 3: ...>
 
+## Hot-path sequence
+
+<fenced code block with literal events / DDL / request-response / call sequence>
+
+## External Contracts
+
+- <contract>: <invariant that must be preserved>
+
+## Assumptions
+
+- <falsifiable assumption>
+
 ## Test Strategy
 
-- Unit tests: <what to test, which files>
+- Failing test: `<tests/.../test_x.py::test_y>` — one sentence on what it proves
+- Additional unit tests: <what to test, which files>
 - E2E tests: <whether needed, which scenarios>
 
 ## Acceptance Criteria
 
-- [ ] Failing unit tests written
+- [ ] Failing unit test (above) written
 - [ ] Implementation makes all tests pass
 - [ ] dev_checks passes
 - [ ] <domain-specific criteria>
@@ -109,12 +141,6 @@ Write `dev/OBJECTIVE.md`:
 - Branch: <branch>
 - PR: <filled later>
 ```
-
-### 2.3 Get Plan Approval
-
-Present the plan to the user. **STOP and wait for approval.**
-
-Do not proceed until the user confirms. Adjust the plan if they have feedback.
 
 ---
 
