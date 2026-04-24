@@ -105,6 +105,15 @@
       "author": {
         "name": "Jai"
       }
+    },
+    {
+      "name": "cc-catalogue",
+      "source": "./plugins/cc-catalogue",
+      "description": "Self-updating local catalogue of Claude Code features. Subagent fetches docs on version change, answers CC questions from the cache.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Jai"
+      }
     }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "name": "cc-catalogue",
+  "version": "0.1.0",
+  "description": "Self-updating local catalogue of Claude Code features. Subagent fetches docs on version change, answers CC questions from the cache.",
+  "author": {
+    "name": "Jai"
+  },
+  "license": "MIT",
+  "keywords": ["claude-code", "docs", "catalogue", "reference", "sync"]
+}
