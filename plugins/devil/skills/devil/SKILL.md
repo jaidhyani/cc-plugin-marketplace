@@ -29,14 +29,15 @@ Build a brief for the devil agent. Include:
 
 ## Step 3: Dispatch with Q&A Loop
 
-Use the Agent tool to spawn the `devil` agent. Give it an addressable `name` (e.g., `devil-<short-id>`) so you can resume it via SendMessage. Run in foreground. Pass the assembled brief as the prompt — that is the agent's initial input.
+Use the Agent tool to spawn the `devil` agent. Run in foreground. Pass the assembled brief as the prompt — that is the agent's initial input.
 
 The agent may end its response with a `## Questions for dispatcher:` section. If it does:
 
 1. Answer each question from your conversation context. Read files, check git, recall prior decisions you made with the user. Be honest — if you don't know, say so. Brief, factual answers; no persuasion.
-2. SendMessage to the named agent with the answers (`Answer 1: ...`, `Answer 2: ...`).
-3. Loop. **Hard cap at 3 total exchanges** (initial dispatch + up to 2 Q&A rounds). On the final round, prefix your answers with "Final round — deliver your critique now."
-4. When the agent returns a response with no `## Questions for dispatcher:` section, that is the final critique. Stop.
+2. **Capture the agent ID from the agent's response footer** — it appears as `agentId: <id> (use SendMessage with to: '<id>' to continue this agent)`. This ID is the addressable handle. The `name` parameter on `Agent` does *not* reliably work for resumption: a foreground agent has typically completed by the time you'd send a follow-up, and SendMessage-by-name fails with "no agent named is currently addressable" once the agent is no longer active. SendMessage-by-ID resumes it from transcript instead, which is what you want.
+3. SendMessage `to: "<agent-id>"` with the answers (`Answer 1: ...`, `Answer 2: ...`). The resumed agent runs in the background — you'll receive a task-completion notification when it returns.
+4. Loop. **Hard cap at 3 total exchanges** (initial dispatch + up to 2 Q&A rounds). On the final round, prefix your answers with "Final round — deliver your critique now."
+5. When the agent returns a response with no `## Questions for dispatcher:` section, that is the final critique. Stop.
 
 **Bias warning while answering questions:** you have the same anchoring you had when writing the brief. When the agent presses on weak ground in the design, your instinct will be to defend it. Resist. Answer factually, not persuasively. If your honest answer is "we didn't consider that" or "I don't know why we chose A over B," say exactly that.
 
