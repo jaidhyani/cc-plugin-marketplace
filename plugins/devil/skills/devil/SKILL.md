@@ -27,9 +27,18 @@ Build a brief for the devil agent. Include:
 - If alternatives were discussed and rejected, mention them and the rejection reasoning — let the agent decide if the rejection was sound
 - If you had doubts during the work, surface them here even if you moved past them
 
-## Step 3: Dispatch
+## Step 3: Dispatch with Q&A Loop
 
-Use the Agent tool to spawn the `devil` agent. Run in foreground. Pass the assembled brief as the prompt — this is the agent's only input.
+Use the Agent tool to spawn the `devil` agent. Give it an addressable `name` (e.g., `devil-<short-id>`) so you can resume it via SendMessage. Run in foreground. Pass the assembled brief as the prompt — that is the agent's initial input.
+
+The agent may end its response with a `## Questions for dispatcher:` section. If it does:
+
+1. Answer each question from your conversation context. Read files, check git, recall prior decisions you made with the user. Be honest — if you don't know, say so. Brief, factual answers; no persuasion.
+2. SendMessage to the named agent with the answers (`Answer 1: ...`, `Answer 2: ...`).
+3. Loop. **Hard cap at 3 total exchanges** (initial dispatch + up to 2 Q&A rounds). On the final round, prefix your answers with "Final round — deliver your critique now."
+4. When the agent returns a response with no `## Questions for dispatcher:` section, that is the final critique. Stop.
+
+**Bias warning while answering questions:** you have the same anchoring you had when writing the brief. When the agent presses on weak ground in the design, your instinct will be to defend it. Resist. Answer factually, not persuasively. If your honest answer is "we didn't consider that" or "I don't know why we chose A over B," say exactly that.
 
 ## Step 4: Return Results
 
@@ -37,7 +46,7 @@ Present the agent's output to the user **unfiltered**. Do not editorialize, soft
 
 ## Multi-Round Use
 
-Each `/devil` invocation spawns a fresh agent. This is intentional — no warming up to the idea over time. If the user wants to argue back and get another round, they invoke `/devil` again.
+Each `/devil` invocation spawns a fresh agent. This is intentional — no warming up to the idea over time. If the user wants to argue back and get another round, they invoke `/devil` again. (This is distinct from the in-session Q&A loop in Step 3, which is the agent asking *you* for clarification, not the user re-engaging.)
 
 For follow-up rounds, include in the brief:
 - The previous agent's critique (key points, not the full output)
