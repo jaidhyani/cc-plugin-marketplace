@@ -60,9 +60,25 @@ If appropriate:
 
 If changes are purely internal with no API surface change, skip with a note.
 
+### 7. Doc-Drift Sweep
+
+Dispatch the `docs-drift-review` agent before promoting the PR. The agent diffs the branch against its merge base, finds prose/config that contradicts the new state, and fixes the unambiguous cases directly.
+
+```
+Agent({
+  description: "Doc-drift sweep before PR ready",
+  subagent_type: "docs-drift-review",
+  prompt: "Review this branch for doc drift. Merge base: <PR base branch, fall back to origin/main>. Goal: catch stale env vars, removed identifiers in ARCHITECTURE.md, deleted config keys still in READMEs, etc. Fix unambiguous contradictions; report judgment calls."
+})
+```
+
+If the agent edited files, **commit and push** (`docs: fix drift`). For the "Needs judgment" items, address obvious contradictions; defer truly substantive rewrites unless they block the PR.
+
+This step is non-negotiable — the dev-pass author rarely sees their own drift, which is the whole reason this agent exists.
+
 ## Phase 2: Ship
 
-### 7. Add Changelog Fragment
+### 8. Add Changelog Fragment
 
 If a changelog fragment doesn't already exist for this branch:
 
@@ -71,12 +87,12 @@ If a changelog fragment doesn't already exist for this branch:
 3. Write `changelog.d/<branch-name>.md` with frontmatter (see `changelog.d/README.md`)
 4. Commit and push.
 
-### 8. Clear Dev Files
+### 9. Clear Dev Files
 
 - Empty `dev/OBJECTIVE.md`
 - Empty `dev/NOTES.md`
 
-### 9. Final Commit, Push, and Promote PR
+### 10. Final Commit, Push, and Promote PR
 
 ```bash
 git add -A
@@ -89,20 +105,20 @@ gh pr ready
 
 This phase loops until the PR is approved and all checks pass.
 
-### 10. Check for Feedback
+### 11. Check for Feedback
 
 ```bash
 gh pr checks <number>
 gh pr view <number> --json reviews,comments,state,reviewDecision
 ```
 
-### 11. Address CI Failures
+### 12. Address CI Failures
 
 If checks failed:
 - Fetch logs: `gh run view <run_id> --log-failed`
 - Fix, run dev_checks, **commit and push** the fix
 
-### 12. Address Review Comments
+### 13. Address Review Comments
 
 Fetch comments:
 ```bash
@@ -116,23 +132,23 @@ For each comment:
 - Run dev_checks — **commit and push** any formatting fixes separately
 - **Commit and push** review response (`fix: address review — <summary>`)
 
-### 13. Check Approval Status
+### 14. Check Approval Status
 
 **If approved and checks pass**: tell the user the PR is ready to merge. **Do NOT merge.**
 
-**If changes requested or checks failing**: loop back to step 11.
+**If changes requested or checks failing**: loop back to step 12.
 
 **If waiting for review**: tell the user and ask if they want to wait or come back later.
 
-### 14. Start Background Monitor
+### 15. Start Background Monitor
 
-After promoting the PR (Step 9) or after addressing feedback, launch the background PR monitor (same pattern as `/pr` Step 6). This monitors CI, comments, reviews, and merge conflicts every 90 seconds and alerts when action is needed.
+After promoting the PR (Step 10) or after addressing feedback, launch the background PR monitor (same pattern as `/pr` Step 6). This monitors CI, comments, reviews, and merge conflicts every 90 seconds and alerts when action is needed.
 
-When an alert fires, loop back to Step 11 (CI failures) or Step 12 (comments/reviews) as appropriate.
+When an alert fires, loop back to Step 12 (CI failures) or Step 13 (comments/reviews) as appropriate.
 
 ## Phase 4: Close Out (after human merges)
 
-### 15. Wait for Merge
+### 16. Wait for Merge
 
 Monitor PR state. When `MERGED`:
 
